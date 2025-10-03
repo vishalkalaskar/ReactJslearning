@@ -1,0 +1,22 @@
+{
+  "name": "Node.js & React Dev Container",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:latest",
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "20"
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",         // Linting
+        "esbenp.prettier-vscode",         // Formatting
+        "streetsidesoftware.code-spell-checker",
+        "formulahendry.auto-rename-tag",  // Auto rename JSX tags
+        "dsznajder.es7-react-js-snippets",// React snippets
+        "xabikos.JavaScriptSnippets"      // JS snippets
+      ]
+    }
+  },
+  "postCreateCommand": "npm install"
+}
