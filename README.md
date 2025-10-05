@@ -23,7 +23,7 @@ npm install
 npm run dev
 
 
-jsx-->(javascript+XML)
+jsx-->(javascript+html code)
 
 function app(){}
 {}->lets you insert JS expressions inside jsx.
