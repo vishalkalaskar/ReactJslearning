@@ -415,3 +415,15 @@ take things while coding in react
 library--> library give free hand while creating file for project but should be follow same basic rules.
   
 framework-->give the standard path way to create your projects and its file structures.
+# this you can return two different component in file
+function user ()
+{
+}
+export function profile(){}
+export function login(){}
+export default user
+
+#variable export 
+export const userkey="q342r232re";
+
+import user,{login,proflie,userkey} from ""
