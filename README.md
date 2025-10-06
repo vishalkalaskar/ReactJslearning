@@ -428,3 +428,23 @@ export const userkey="q342r232re";
 
 import user,{login,proflie,userkey} from ""
 **while function calling react want function definition(functionName) not function call(functionName())**
+
+*MUltiple condition scenario*
+             newcount==0?<h1>Condition 1</h1>
+            :newcount==1?<h1>Condition 2</h1>
+            :newcount==2?<h2>Condition 3</h2>
+            :<h2>other condition</h2>
+
+
+| Type      | Example                                      | Purpose                         |
+| --------- | -------------------------------------------- | ------------------------------- |
+| Primitive | `<Comp name="Vishal" />`                     | Display static data             |
+| Object    | `<Comp user={userObj} />`                    | Send multiple values together   |
+| Function  | `<Comp onClick={handleClick} />`             | Trigger parent logic from child |
+| State     | `<Comp count={count} setCount={setCount} />` | Share state between components  |
+
+
+**div style in component**
+return (
+     <div style={{color:"green",border:"1px solid",}}></div>
+)
