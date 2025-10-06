@@ -427,3 +427,4 @@ export default user
 export const userkey="q342r232re";
 
 import user,{login,proflie,userkey} from ""
+**while function calling react want function definition(functionName) not function call(functionName())**
