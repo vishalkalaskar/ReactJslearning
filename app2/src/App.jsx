@@ -3,6 +3,7 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 import User, { Userdata,Userdatatwo,Wrapper} from './User';
+import { Select } from 'antd';
 
 function App() {
  
@@ -20,6 +21,16 @@ function App() {
   const Userobjtwo={name:"anil",age:29,email:"anil@gmail.com"};
    
   const[val,setVal]=useState(" ");
+
+   const [options, setOptions] = useState(["Apple", "Banana", "Mango"]);
+  const [inputValue, setInputValue] = useState("");
+
+  const handleAdd = () => {
+    if (inputValue.trim() !== "" && !options.includes(inputValue)) {
+      setOptions([...options, inputValue]);
+      setInputValue("");
+    }
+  };
   return (
     <>
       <div>
@@ -71,8 +82,41 @@ function App() {
       <h1>{val}</h1>
 
       <button onClick={()=>setVal(" ")}>clear filed</button>
+        <hr></hr>
+    
+      <h3>Add Items to Dropdown</h3>
+
+      <input
+        type="text"
+        placeholder="Enter new item"
+        value={inputValue}
+        onChange={(e) => setInputValue(e.target.value)}
+      />
+
+      <button onClick={handleAdd} style={{ marginLeft: "10px" }}>
+        Add
+      </button>
+
+      <br /><br />
+
+      <Select  
+      showSearch
+    style={{ width: 200 }}
+    placeholder="Search to Select"
+    optionFilterProp="label"
+    filterOption={(input, option) =>
+          option?.children.toLowerCase().includes(input.toLowerCase())
+        }>
+        {options.map((item, index) => (
+          <option key={index}>{item}</option>
+        ))}
+      </Select>
+
      </div>
+    
+        
     </>
+    
 
   )
 }

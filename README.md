@@ -448,3 +448,23 @@ import user,{login,proflie,userkey} from ""
 return (
      <div style={{color:"green",border:"1px solid",}}></div>
 )
+
+**Controlle Component**
+  A Controlled component is a form whose input filed values is controlled by reacts'state
+      
+     How it works
+            1. store input field value in state
+            2.Use change handler with input filed
+            3.value attribute attached with state
+
+spread operator [...skills,event.target.value];
+  The spread operator (...) in React (and JavaScript) is super useful — it helps you copy, merge, and pass props or state easily.
+
+| Use Case        | Example                         |
+| --------------- | ------------------------------- |
+| Pass all props  | `<Comp {...props} />`           |
+| Update state    | `setUser({ ...user, age: 30 })` |
+| Merge arrays    | `[...arr, newItem]`             |
+| Combine objects | `{ ...obj1, ...obj2 }`          |
+
+**input filed has checked property**
