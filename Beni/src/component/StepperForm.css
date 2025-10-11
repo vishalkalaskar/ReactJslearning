@@ -30,17 +30,35 @@
   justify-content: center;
   color: white;
   font-weight: bold;
+  position: relative; /* needed for ::after */
   transition: all 0.3s ease;
 }
 
+/* Inner white circle for active/normal step only */
+.circle:not(.completed)::after {
+  content: "";
+  position: absolute;
+  width: 14px;   /* half of outer circle */
+  height: 14px;
+  border-radius: 50%;
+  background-color: white;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 0;
+}
+
 .circle.active {
-  background-color: #4caf50;
+  background-color: #007bff;
 }
 
 .circle.completed {
-  background-color: #4caf50;
+  background-color: #007bff;
   font-size: 16px;
+  color: white; /* checkmark will be visible */
+  z-index: 1;
 }
+
 
 .label {
   font-size: 13px;
@@ -61,7 +79,7 @@
 }
 
 .line.filled {
-  background-color: #4caf50;
+  background-color: #007bff;
 }
 
 .form-section {
@@ -86,7 +104,7 @@ button {
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  background: #4caf50;
+  background: #007bff;
   color: white;
 }
 
