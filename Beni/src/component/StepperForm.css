@@ -1,0 +1,93 @@
+.container {
+  width: 750px;
+  margin: 50px auto;
+  text-align: center;
+  font-family: sans-serif;
+}
+
+.stepper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 40px;
+  position: relative;
+}
+
+.step {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  position: relative;
+}
+
+.circle {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background-color: #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.circle.active {
+  background-color: #4caf50;
+}
+
+.circle.completed {
+  background-color: #4caf50;
+  font-size: 16px;
+}
+
+.label {
+  font-size: 13px;
+  color: #333;
+  white-space: nowrap;
+}
+
+.line {
+  flex: 1;
+  height: 2px;
+  background-color: #ccc;
+  margin: 0 5px;
+  transition: 0.3s;
+  transform: translateY(-2px);
+}
+
+.line.filled {
+  background-color: #4caf50;
+}
+
+.form-section {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.form-section input {
+  width: 80%;
+  margin: 10px 0;
+  padding: 8px;
+}
+
+.buttons {
+  margin-top: 20px;
+}
+
+button {
+  margin: 0 5px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  background: #4caf50;
+  color: white;
+}
+
+button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
