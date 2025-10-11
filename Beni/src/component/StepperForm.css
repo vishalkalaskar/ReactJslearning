@@ -45,8 +45,11 @@
 .label {
   font-size: 13px;
   color: #333;
-  white-space: nowrap;
+  /* text-align: center; */
+  line-height: 1.2; /* controls spacing between two lines */
+  text-align: left;
 }
+
 
 .line {
   flex: 1;
