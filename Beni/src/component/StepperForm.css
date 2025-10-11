@@ -112,3 +112,25 @@ button:disabled {
   background: #ccc;
   cursor: not-allowed;
 }
+
+.section {
+  border: 1px solid #ddd;
+  padding: 15px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  text-align: left;
+}
+
+.section h4 {
+  margin-bottom: 10px;
+  font-size: 14px;
+  color: #007bff;
+}
+
+.section input {
+  width: 95%;
+  margin: 6px 0;
+  padding: 6px 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}

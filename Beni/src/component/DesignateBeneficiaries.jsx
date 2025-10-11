@@ -1,103 +1,121 @@
-import React, { useState } from "react";
-import "./StepperForm.css";
+import React, { useState } from 'react';
+import { Building2, HandCoins, Home, ChevronDown, User } from 'lucide-react';
+import './DesignateBeneficiaries.css';
 
-const StepperForm = () => {
-  const [step, setStep] = useState(1);
+const DesignateBeneficiaries = ({ onSelectionChange, selectedType: initialSelectedType }) => {
+  const [selectedType, setSelectedType] = useState(initialSelectedType || null);
+  const [showHelp, setShowHelp] = useState(false);
 
-  // 👇 Define individual step names here
- const steps = [
-  { id: 1, label: <>Select<br/>Beneficiary</> },
-  { id: 2, label: <>Add<br/>Details</> },
-  { id: 3, label: <>Review<br/>Beneficiary</> },
-  { id: 4, label: <>Select<br/>Allocation</> },
-  { id: 5, label: <>Review<br/>Designation</> },
-];
+  // Update local state when prop changes (for back navigation)
+  React.useEffect(() => {
+    if (initialSelectedType === null) {
+      setSelectedType(null);
+    } else {
+      setSelectedType(initialSelectedType);
+    }
+  }, [initialSelectedType]);
 
+  const beneficiaryTypes = [
+    {
+      id: 'individual',
+      icon: User,
+      label: 'An individual'
+    },
+    {
+      id: 'organization',
+      icon: Building2,
+      label: 'An organization'
+    },
+    {
+      id: 'trust',
+      icon: HandCoins,
+      label: 'A trust'
+    },
+    {
+      id: 'estate',
+      icon: Home,
+      label: 'An estate'
+    }
+  ];
 
-  const nextStep = () => setStep((prev) => Math.min(prev + 1, steps.length));
-  const prevStep = () => setStep((prev) => Math.max(prev - 1, 1));
+  const handleSelection = (typeId) => {
+    setSelectedType(typeId);
+    // Notify parent component about the selection
+    if (onSelectionChange) {
+      onSelectionChange(typeId);
+    }
+  };
 
   return (
-    <div className="container">
-      {/* Step Progress */}
-      <div className="stepper">
-        {steps.map((item, index) => (
-          <React.Fragment key={item.id}>
-            <div className="step">
-              <div
-                className={`circle ${
-                  step > item.id
-                    ? "completed"
-                    : step === item.id
-                    ? "active"
-                    : ""
-                }`}
-              >
-                {step > item.id ? "✔" : ""}
+    <div className="beneficiary-selector">
+      {/* Beneficiary Type Options */}
+      <div className="beneficiary-options">
+        {beneficiaryTypes.map((type) => {
+          const IconComponent = type.icon;
+          return (
+            <button
+              key={type.id}
+              onClick={() => handleSelection(type.id)}
+              className={`beneficiary-option ${selectedType === type.id ? 'selected' : ''}`}
+            >
+              <div className="option-content">
+                <IconComponent className="option-icon" strokeWidth={1.5} />
+                <span className="option-label">{type.label}</span>
               </div>
-              <span className="label">{item.label}</span>
+              <div className={`radio-button ${selectedType === type.id ? 'selected' : ''}`}>
+                {selectedType === type.id && <div className="radio-inner"></div>}
+              </div>
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Help Section */}
+      <div className="help-section">
+        <button
+          onClick={() => setShowHelp(!showHelp)}
+          className="help-button"
+        >
+          <div className="help-header">
+            <div className="help-icon">
+              <svg
+                className="question-icon"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={1.5}
+                  d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
             </div>
-
-            {/* Connector line */}
-            {index < steps.length - 1 && (
-              <div
-                className={`line ${step > item.id ? "filled" : ""}`}
-              ></div>
-            )}
-          </React.Fragment>
-        ))}
-      </div>
-
-      {/* Step Form Sections */}
-      <div className="form-section">
-        {step === 1 && (
-          <>
-            <h3>Personal Info</h3>
-            <input placeholder="Enter Name" /><br />
-            <input placeholder="Enter Email" />
-          </>
-        )}
-        {step === 2 && (
-          <>
-            <h3>Address</h3>
-            <input placeholder="City" /><br />
-            <input placeholder="State" />
-          </>
-        )}
-        {step === 3 && (
-          <>
-            <h3>Education</h3>
-            <input placeholder="Qualification" /><br />
-            <input placeholder="University" />
-          </>
-        )}
-        {step === 4 && (
-          <>
-            <h3>Experience</h3>
-            <input placeholder="Company Name" /><br />
-            <input placeholder="Role" />
-          </>
-        )}
-        {step === 5 && (
-          <>
-            <h3>Review</h3>
-            <p>Review your information and submit.</p>
-            <button>Submit</button>
-          </>
-        )}
-      </div>
-
-      {/* Navigation Buttons */}
-      <div className="buttons">
-        <button onClick={prevStep} disabled={step === 1}>
-          Back
+            <span className="help-title">Need some help deciding?</span>
+          </div>
+          <ChevronDown className={`chevron ${showHelp ? 'rotated' : ''}`} />
         </button>
-        <button onClick={nextStep} disabled={step === steps.length}>
-          Next
-        </button>
+        
+        {showHelp && (
+          <div className="help-content">
+            <p>
+              <strong>Individual:</strong> Select this if you're designating a person as a beneficiary.
+            </p>
+            <p>
+              <strong>Organization:</strong> Select this if you're designating a nonprofit, charity, or company as a beneficiary.
+            </p>
+            <p>
+              <strong>Trust:</strong> Choose this option if funds should go to a trust that manages assets for beneficiaries.
+            </p>
+            <p>
+              <strong>Estate:</strong> Select this if the beneficiary is someone's estate or estate planning entity.
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );
 };
 
-export default StepperForm;
+export default DesignateBeneficiaries;
