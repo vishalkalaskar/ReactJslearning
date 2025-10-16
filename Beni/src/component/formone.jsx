@@ -19,6 +19,8 @@ const Formone = () => {
       ...prev,
       [field]: value
     }));
+     sessionStorage.setItem("formOneData", JSON.stringify(formData));
+    console.log("Form One Data Saved:", formData);
   };
 
   const prefixOptions = ['Mr.', 'Mrs.', 'Ms.', 'Dr.', 'Prof.'];

@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { ChevronDown, Calendar, Eye, EyeOff, Search } from 'lucide-react';
+import { ChevronDown, Search } from 'lucide-react';
 
 const Formtwo = () => {
-  
   const [useMyAddress, setUseMyAddress] = useState(false);
-  const [formData, setFormData] = useState({
+
+  const [formDatatwo, setFormDatatwo] = useState({
     prefix: '',
     firstName: '',
     middleName: '',
@@ -22,31 +22,30 @@ const Formtwo = () => {
     city: ''
   });
 
-   const handleChange = (field, value) => {
-    setFormData(prev => ({
-      ...prev,
-      [field]: value
-    }));
+  // Handle input changes
+  const handleChange = (field, value) => {
+    setFormDatatwo(prev => {
+      const updated = { ...prev, [field]: value };
+      sessionStorage.setItem("formTwoData", JSON.stringify(updated)); // ✅ Correct session key
+      console.log("Form Two Data Saved:", updated);
+      return updated;
+    });
   };
-  
 
   const countryOptions = ['United States', 'Canada', 'United Kingdom', 'Australia'];
   const stateOptions = ['New York', 'California', 'Texas', 'Florida', 'Illinois'];
 
-  // Show state field only if country is selected
-  const showStateField = formData.country !== '';
-  
-  // Show contact section only if both country and state are selected
-  const showContactSection = formData.country !== '' && formData.state !== '';
+  // Conditions for dynamic UI rendering
+  const showStateField = formDatatwo.country !== '';
+  const showContactSection = formDatatwo.country !== '' && formDatatwo.state !== '';
 
   return (
     <div className="max-w-4xl mx-auto p-6 space-y-6">
-    
 
       {/* Location Section */}
       <div className="bg-white rounded-3xl shadow-lg p-8">
         <h2 className="text-2xl font-bold text-blue-900 mb-6">Location</h2>
-        
+
         {/* Country */}
         <div className="mb-6">
           <label className="block text-blue-900 font-semibold mb-2">
@@ -54,7 +53,7 @@ const Formtwo = () => {
           </label>
           <div className="relative">
             <select
-              value={formData.country}
+              value={formDatatwo.country}
               onChange={(e) => handleChange('country', e.target.value)}
               className="w-full px-4 py-3 border-2 border-blue-500 rounded-xl appearance-none bg-white focus:outline-none focus:border-blue-600 text-lg"
               required
@@ -68,7 +67,7 @@ const Formtwo = () => {
           </div>
         </div>
 
-        {/* State - Only show if country is selected */}
+        {/* State - Show only if country selected */}
         {showStateField && (
           <div className="mb-6">
             <label className="block text-blue-900 font-semibold mb-2">
@@ -76,7 +75,7 @@ const Formtwo = () => {
             </label>
             <div className="relative">
               <select
-                value={formData.state}
+                value={formDatatwo.state}
                 onChange={(e) => handleChange('state', e.target.value)}
                 className="w-full px-4 py-3 border-2 border-blue-500 rounded-xl appearance-none bg-white focus:outline-none focus:border-blue-600 text-lg"
                 required
@@ -92,11 +91,11 @@ const Formtwo = () => {
         )}
       </div>
 
-      {/* Contact Information Section - Only show if country and state are selected */}
+      {/* Contact Information Section */}
       {showContactSection && (
         <div className="bg-white rounded-3xl shadow-lg p-8">
           <h2 className="text-2xl font-bold text-blue-900 mb-6">Contact Information</h2>
-          
+
           {/* Email */}
           <div className="mb-6">
             <label className="block text-blue-900 font-semibold mb-2">
@@ -104,7 +103,7 @@ const Formtwo = () => {
             </label>
             <input
               type="email"
-              value={formData.email}
+              value={formDatatwo.email}
               onChange={(e) => handleChange('email', e.target.value)}
               placeholder="rosa@gmail.com"
               className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:border-blue-500 text-lg"
@@ -118,14 +117,14 @@ const Formtwo = () => {
             </label>
             <input
               type="tel"
-              value={formData.phone}
+              value={formDatatwo.phone}
               onChange={(e) => handleChange('phone', e.target.value)}
               placeholder="+ (254) 546 4125"
               className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:border-blue-500 text-lg"
             />
           </div>
 
-          {/* Residential Address with Checkbox */}
+          {/* Residential Address */}
           <div className="mb-6">
             <div className="flex items-center justify-between mb-2">
               <label className="block text-blue-900 font-semibold">
@@ -144,7 +143,7 @@ const Formtwo = () => {
             <div className="relative">
               <input
                 type="text"
-                value={formData.address}
+                value={formDatatwo.address}
                 onChange={(e) => handleChange('address', e.target.value)}
                 placeholder="124 Street Rd."
                 className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:border-blue-500 text-lg pr-12"
@@ -153,7 +152,7 @@ const Formtwo = () => {
             </div>
           </div>
 
-          {/* ZIP Code and City */}
+          {/* ZIP Code & City */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label className="block text-blue-900 font-semibold mb-2">
@@ -161,7 +160,7 @@ const Formtwo = () => {
               </label>
               <input
                 type="text"
-                value={formData.zipCode}
+                value={formDatatwo.zipCode}
                 onChange={(e) => handleChange('zipCode', e.target.value)}
                 placeholder="12603"
                 className="w-full px-4 py-3 border-2 border-blue-500 rounded-xl focus:outline-none focus:border-blue-600 text-lg"
@@ -175,7 +174,7 @@ const Formtwo = () => {
               </label>
               <input
                 type="text"
-                value={formData.city}
+                value={formDatatwo.city}
                 onChange={(e) => handleChange('city', e.target.value)}
                 placeholder="NY"
                 className="w-full px-4 py-3 border-2 border-blue-500 rounded-xl focus:outline-none focus:border-blue-600 text-lg"
