@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useRef } from 'react';
 import { ChevronDown, Search } from 'lucide-react';
 
 const Formtwo = () => {
@@ -22,15 +22,50 @@ const Formtwo = () => {
     city: ''
   });
 
+  // Store debounce timer ref
+  //const debounceTimeout = useRef(null);
+
+  // Debounced sessionStorage set
+  // const saveToSession = (data) => {
+  //   if (debounceTimeout.current) clearTimeout(debounceTimeout.current);
+  //   debounceTimeout.current = setTimeout(() => {
+  //     sessionStorage.setItem("formTwoData", JSON.stringify(data));
+  //   }, 1000); // Wait 300ms after last change
+  // };
+
+
   // Handle input changes
-  const handleChange = (field, value) => {
-    setFormDatatwo(prev => {
-      const updated = { ...prev, [field]: value };
-      sessionStorage.setItem("formTwoData", JSON.stringify(updated)); // ✅ Correct session key
-      console.log("Form Two Data Saved:", updated);
-      return updated;
-    });
-  };
+  // const handleChange = (field, value) => {
+  //   setFormDatatwo(prev => {
+  //     const updated = { ...prev, [field]: value };
+  //     sessionStorage.setItem("formTwoData", JSON.stringify(updated)); // ✅ Correct session key
+  //     console.log("Form Two Data Saved:", updated);
+  //     return updated;
+  //   });
+  // };
+  // Modified handleChange
+
+function useDebouncedLogger() {
+  const timer = useRef(null);
+  return function logDebounced(data) {
+    if (timer.current) clearTimeout(timer.current);
+    timer.current = setTimeout(() => {
+      console.log('Form Two Data Saved:', data);
+    }, 900); // only logs once every 300ms after user stops typing
+  }
+}
+
+// Usage — inside your component
+const logDebounced = useDebouncedLogger();
+const handleChange = (field, value) => {
+  setFormDatatwo(prev => {
+    const updated = { ...prev, [field]: value };
+    sessionStorage.setItem("formTwoData", JSON.stringify(updated));
+    logDebounced(updated);
+    return updated;
+  });
+};
+
 
   const countryOptions = ['United States', 'Canada', 'United Kingdom', 'Australia'];
   const stateOptions = ['New York', 'California', 'Texas', 'Florida', 'Illinois'];
