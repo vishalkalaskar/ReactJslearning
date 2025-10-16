@@ -3,6 +3,8 @@ import "./StepperForm.css";
 import { Radio, Space } from "antd";
 import { UserOutlined, TeamOutlined, BankOutlined, HomeOutlined } from "@ant-design/icons";
 import DesignateBeneficiaries from './DesignateBeneficiaries';
+import Formone from './formone'
+import Formtwo from "./formtwo";
 
 const StepperForm = () => {
   const [step, setStep] = useState(1);
@@ -108,24 +110,30 @@ const StepperForm = () => {
   };
 
   const prevStep = () => {
-    if (step === 2 && step2Sub > 1) {
-      setStep2Sub(step2Sub - 1);
-    } else {
-      const newStep = Math.max(step - 1, 1);
-      
-      // Reset the current step when going back
-      if (step > 1) {
-        resetStep(step);
-      }
-      
-      setStep(newStep);
-      
-      // If going back to step 2, set to last sub-step
-      if (newStep === 2) {
-        setStep2Sub(3);
-      }
+  // If at step 1 (first step), go back to previous page
+  if (step === 1) {
+    window.history.back();
+    return;
+  }
+  
+  if (step === 2 && step2Sub > 1) {
+    setStep2Sub(step2Sub - 1);
+  } else {
+    const newStep = Math.max(step - 1, 1);
+    
+    // Reset the current step when going back
+    if (step > 1) {
+      resetStep(step);
     }
-  };
+    
+    setStep(newStep);
+    
+    // If going back to step 2, set to last sub-step
+    if (newStep === 2) {
+      setStep2Sub(3);
+    }
+  }
+};
 
   return (
     <div className="container">
@@ -171,72 +179,17 @@ const StepperForm = () => {
 
         {step === 2 && (
           <>
-            <h3>Add Details</h3>
-
+            {/* <h3>Add Details</h3> */}
             {/* Step 2 Sub-Steps */}
             {step2Sub === 1 && (
               <div className="section">
-                <h4>Personal Details</h4>
-                <input 
-                  placeholder="First Name" 
-                  value={step2SubData.sub1.firstName}
-                  onChange={(e) => handleInputChange('sub1', 'firstName', e.target.value)}
-                /><br />
-                <input 
-                  placeholder="Last Name" 
-                  value={step2SubData.sub1.lastName}
-                  onChange={(e) => handleInputChange('sub1', 'lastName', e.target.value)}
-                /><br />
-                <input 
-                  placeholder="Date of Birth" 
-                  type="date"
-                  value={step2SubData.sub1.dob}
-                  onChange={(e) => handleInputChange('sub1', 'dob', e.target.value)}
-                />
+                 <Formone />
               </div>
             )}
 
             {step2Sub === 2 && (
               <div className="section">
-                <h4>Contact Details</h4>
-                <input 
-                  placeholder="Email" 
-                  type="email"
-                  value={step2SubData.sub2.email}
-                  onChange={(e) => handleInputChange('sub2', 'email', e.target.value)}
-                /><br />
-                <input 
-                  placeholder="Phone Number" 
-                  type="tel"
-                  value={step2SubData.sub2.phone}
-                  onChange={(e) => handleInputChange('sub2', 'phone', e.target.value)}
-                /><br />
-                <input 
-                  placeholder="Address" 
-                  value={step2SubData.sub2.address}
-                  onChange={(e) => handleInputChange('sub2', 'address', e.target.value)}
-                />
-              </div>
-            )}
-
-            {step2Sub === 3 && (
-              <div className="section">
-                <h4>Bank Details</h4>
-                <input 
-                  placeholder="Bank Name" 
-                  value={step2SubData.sub3.bankName}
-                  onChange={(e) => handleInputChange('sub3', 'bankName', e.target.value)}
-                /><br />
-                <input 
-                  placeholder="Account Number" 
-                  value={step2SubData.sub3.accountNumber}
-                  onChange={(e) => handleInputChange('sub3', 'accountNumber', e.target.value)}
-                /><br />
-                <input 
-                  placeholder="IFSC Code" 
-                  value={step2SubData.sub3.ifsc}
-                  onChange={(e) => handleInputChange('sub3', 'ifsc', e.target.value)}
-                />
+                 <Formtwo />
               </div>
             )}
           </>
@@ -304,12 +257,17 @@ const StepperForm = () => {
 
       {/* Navigation Buttons */}
       <div className="buttons">
-        <button onClick={prevStep} disabled={step === 1 && step2Sub === 1}>
+        <button onClick={prevStep} disabled={false}>
           Back
         </button>
-        <button
+        {/* <button
           onClick={nextStep}
           disabled={!isNextEnabled() || step === 5}
+        >
+          Next
+        </button> */}
+        <button
+          onClick={nextStep}
         >
           Next
         </button>

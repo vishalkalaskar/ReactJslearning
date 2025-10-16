@@ -1,4 +1,6 @@
 import { useNavigate } from 'react-router-dom';
+import StepperForm from './StepperForm';
+import Step from './Step'
 
 function GlobalDesignationPage() {
    const navigate = useNavigate();
@@ -87,7 +89,8 @@ function GlobalDesignationPage() {
                 </button>
                 <button 
                   className="px-8 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors"
-                >
+                  onClick={() => navigate('/StepperForm')}           
+                  >
                   Next
                 </button>
               </div>
