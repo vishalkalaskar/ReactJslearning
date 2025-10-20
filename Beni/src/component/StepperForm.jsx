@@ -5,6 +5,9 @@ import { UserOutlined, TeamOutlined, BankOutlined, HomeOutlined } from "@ant-des
 import DesignateBeneficiaries from './DesignateBeneficiaries';
 import Formone from './formone'
 import Formtwo from "./formtwo";
+import ReviewBeni from './ReviewBeni'
+import AssetAllocationForm from './Allocation'
+import Reviewd from './ReviewD'
 
 const StepperForm = () => {
   const [step, setStep] = useState(1);
@@ -15,7 +18,6 @@ const StepperForm = () => {
   const [step2SubData, setStep2SubData] = useState({
     sub1: { firstName: '', lastName: '', dob: '' },
     sub2: { email: '', phone: '', address: '' },
-    sub3: { bankName: '', accountNumber: '', ifsc: '' }
   });
   const [step4Allocation, setStep4Allocation] = useState('');
 
@@ -58,7 +60,7 @@ const StepperForm = () => {
     if (step === 2) {
       if (step2Sub === 1) return isStep2Sub1Valid();
       if (step2Sub === 2) return isStep2Sub2Valid();
-      if (step2Sub === 3) return isStep2Sub3Valid();
+      
     }
     if (step === 4) {
       return step4Allocation.trim() !== '';
@@ -87,8 +89,8 @@ const StepperForm = () => {
       case 2:
         setStep2SubData({
           sub1: { firstName: '', lastName: '', dob: '' },
-          sub2: { email: '', phone: '', address: '' },
-          sub3: { bankName: '', accountNumber: '', ifsc: '' }
+          sub2: { email: '', phone: '', address: '' }
+        
         });
         setStep2Sub(1);
         break;
@@ -101,7 +103,7 @@ const StepperForm = () => {
   };
 
   const nextStep = () => {
-    if (step === 2 && step2Sub < 3) {
+    if (step === 2 && step2Sub < 2) {
       setStep2Sub(step2Sub + 1);
     } else {
       setStep((prev) => Math.min(prev + 1, steps.length));
@@ -130,7 +132,7 @@ const StepperForm = () => {
     
     // If going back to step 2, set to last sub-step
     if (newStep === 2) {
-      setStep2Sub(3);
+      setStep2Sub(2);
     }
   }
 };
@@ -197,60 +199,19 @@ const StepperForm = () => {
 
         {step === 3 && (
           <>
-            <h3>Review Beneficiary</h3>
-            <div className="review-section">
-              <p><strong>Beneficiary Type:</strong> {step1Selected}</p>
-              <h4>Personal Details:</h4>
-              <p>First Name: {step2SubData.sub1.firstName}</p>
-              <p>Last Name: {step2SubData.sub1.lastName}</p>
-              <p>Date of Birth: {step2SubData.sub1.dob}</p>
-              <h4>Contact Details:</h4>
-              <p>Email: {step2SubData.sub2.email}</p>
-              <p>Phone: {step2SubData.sub2.phone}</p>
-              <p>Address: {step2SubData.sub2.address}</p>
-              <h4>Bank Details:</h4>
-              <p>Bank Name: {step2SubData.sub3.bankName}</p>
-              <p>Account Number: {step2SubData.sub3.accountNumber}</p>
-              <p>IFSC Code: {step2SubData.sub3.ifsc}</p>
-            </div>
+            <ReviewBeni />
           </>
         )}
 
         {step === 4 && (
           <>
-            <h3>Select Allocation</h3>
-            <input 
-              placeholder="Allocation %" 
-              type="number"
-              min="0"
-              max="100"
-              value={step4Allocation}
-              onChange={(e) => setStep4Allocation(e.target.value)}
-            />
+           <AssetAllocationForm />
           </>
         )}
 
         {step === 5 && (
           <>
-            <h3>Review Designation</h3>
-            <div className="review-section">
-              <p><strong>Beneficiary Type:</strong> {step1Selected}</p>
-              <h4>Personal Details:</h4>
-              <p>First Name: {step2SubData.sub1.firstName}</p>
-              <p>Last Name: {step2SubData.sub1.lastName}</p>
-              <p>Date of Birth: {step2SubData.sub1.dob}</p>
-              <h4>Contact Details:</h4>
-              <p>Email: {step2SubData.sub2.email}</p>
-              <p>Phone: {step2SubData.sub2.phone}</p>
-              <p>Address: {step2SubData.sub2.address}</p>
-              <h4>Bank Details:</h4>
-              <p>Bank Name: {step2SubData.sub3.bankName}</p>
-              <p>Account Number: {step2SubData.sub3.accountNumber}</p>
-              <p>IFSC Code: {step2SubData.sub3.ifsc}</p>
-              <h4>Allocation:</h4>
-              <p>{step4Allocation}%</p>
-            </div>
-            <button onClick={() => alert('Form Submitted!')}>Submit</button>
+            <Reviewd />
           </>
         )}
       </div>

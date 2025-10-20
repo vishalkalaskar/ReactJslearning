@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { ChevronDown, Calendar, Eye, EyeOff } from 'lucide-react';
 
 const Formone = () => {
@@ -14,13 +14,78 @@ const Formone = () => {
     ssn: ''
   });
 
+  const [errors, setErrors] = useState({
+    firstName: '',
+    middleName: '',
+    lastName: '',
+    ssn: ''
+  });
+
+  function useDebouncedLoggerone() {
+    const timer = useRef(null);
+    return function logDebouncedone(data) {
+      if (timer.current) clearTimeout(timer.current);
+      timer.current = setTimeout(() => {
+        console.log('Form Data Saved:', data);
+      }, 900);
+    }
+  }
+  
+  const logDebouncedone = useDebouncedLoggerone();
+
   const handleChange = (field, value) => {
-    setFormData(prev => ({
+    let validatedValue = value;
+    let errorMessage = '';
+
+    // Name fields validation (firstName, middleName, lastName)
+    if (['firstName', 'middleName', 'lastName'].includes(field)) {
+      // Check if input contains invalid characters
+      if (/[^a-zA-Z\s]/.test(value)) {
+        errorMessage = 'Only letters and spaces allowed';
+      }
+      // Check length
+      if (value.length > 20) {
+        errorMessage = 'Maximum 20 characters allowed';
+      }
+      // Only allow letters and spaces, max 20 characters
+      validatedValue = value.replace(/[^a-zA-Z\s]/g, '').slice(0, 20);
+    }
+
+    // SSN validation
+    if (field === 'ssn') {
+      // Check if input contains invalid characters
+      if (/\D/.test(value)) {
+        errorMessage = 'Only numbers allowed';
+      }
+      // Check length
+      if (value.length > 8) {
+        errorMessage = 'Maximum 8 digits allowed';
+      }
+      // Only allow digits, max 8 numbers
+      validatedValue = value.replace(/\D/g, '').slice(0, 8);
+    }
+
+    // Update errors
+    setErrors(prev => ({
       ...prev,
-      [field]: value
+      [field]: errorMessage
     }));
-     sessionStorage.setItem("formOneData", JSON.stringify(formData));
-    console.log("Form One Data Saved:", formData);
+
+    // Clear error after 3 seconds
+    if (errorMessage) {
+      setTimeout(() => {
+        setErrors(prev => ({
+          ...prev,
+          [field]: ''
+        }));
+      }, 3000);
+    }
+
+    setFormData(prev => {
+      const updated = { ...prev, [field]: validatedValue };
+      logDebouncedone(updated);
+      return updated;
+    });
   };
 
   const prefixOptions = ['Mr.', 'Mrs.', 'Ms.', 'Dr.', 'Prof.'];
@@ -59,9 +124,12 @@ const Formone = () => {
               type="text"
               value={formData.firstName}
               onChange={(e) => handleChange('firstName', e.target.value)}
-              className="w-full px-4 py-3 border-2 border-blue-500 rounded-xl focus:outline-none focus:border-blue-600"
-              required
+              className={`w-full px-4 py-3 border-2 ${errors.firstName ? 'border-red-500' : 'border-blue-500'} rounded-xl focus:outline-none focus:border-blue-600`}
+              required            
             />
+            {errors.firstName && (
+              <p className="text-red-500 text-sm mt-1">{errors.firstName}</p>
+            )}
           </div>
         </div>
 
@@ -74,8 +142,11 @@ const Formone = () => {
             type="text"
             value={formData.middleName}
             onChange={(e) => handleChange('middleName', e.target.value)}
-            className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:border-blue-500"
+            className={`w-full px-4 py-3 border-2 ${errors.middleName ? 'border-red-500' : 'border-gray-300'} rounded-xl focus:outline-none focus:border-blue-500`}
           />
+          {errors.middleName && (
+            <p className="text-red-500 text-sm mt-1">{errors.middleName}</p>
+          )}
         </div>
 
         {/* Row 3: Last Name and Suffix */}
@@ -88,9 +159,12 @@ const Formone = () => {
               type="text"
               value={formData.lastName}
               onChange={(e) => handleChange('lastName', e.target.value)}
-              className="w-full px-4 py-3 border-2 border-blue-500 rounded-xl focus:outline-none focus:border-blue-600"
+              className={`w-full px-4 py-3 border-2 ${errors.lastName ? 'border-red-500' : 'border-blue-500'} rounded-xl focus:outline-none focus:border-blue-600`}
               required
             />
+            {errors.lastName && (
+              <p className="text-red-500 text-sm mt-1">{errors.lastName}</p>
+            )}
           </div>
 
           <div>
@@ -160,9 +234,9 @@ const Formone = () => {
                 type={showSSN ? "text" : "password"}
                 value={formData.ssn}
                 onChange={(e) => handleChange('ssn', e.target.value)}
-                placeholder="XXX-XX-XXXX"
-                maxLength="11"
-                className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:border-blue-500 pr-12"
+                placeholder="8 digits only"
+                maxLength="8"
+                className={`w-full px-4 py-3 border-2 ${errors.ssn ? 'border-red-500' : 'border-gray-300'} rounded-xl focus:outline-none focus:border-blue-500 pr-12`}
               />
               <button
                 type="button"
@@ -172,6 +246,9 @@ const Formone = () => {
                 {showSSN ? <EyeOff size={20} /> : <Eye size={20} />}
               </button>
             </div>
+            {errors.ssn && (
+              <p className="text-red-500 text-sm mt-1">{errors.ssn}</p>
+            )}
           </div>
         </div>
       </div>

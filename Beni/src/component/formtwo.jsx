@@ -1,4 +1,4 @@
-import React, { useState,useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { ChevronDown, Search } from 'lucide-react';
 
 const Formtwo = () => {
@@ -22,55 +22,119 @@ const Formtwo = () => {
     city: ''
   });
 
-  // Store debounce timer ref
-  //const debounceTimeout = useRef(null);
-
-  // Debounced sessionStorage set
-  // const saveToSession = (data) => {
-  //   if (debounceTimeout.current) clearTimeout(debounceTimeout.current);
-  //   debounceTimeout.current = setTimeout(() => {
-  //     sessionStorage.setItem("formTwoData", JSON.stringify(data));
-  //   }, 1000); // Wait 300ms after last change
-  // };
-
-
-  // Handle input changes
-  // const handleChange = (field, value) => {
-  //   setFormDatatwo(prev => {
-  //     const updated = { ...prev, [field]: value };
-  //     sessionStorage.setItem("formTwoData", JSON.stringify(updated)); // ✅ Correct session key
-  //     console.log("Form Two Data Saved:", updated);
-  //     return updated;
-  //   });
-  // };
-  // Modified handleChange
-
-function useDebouncedLogger() {
-  const timer = useRef(null);
-  return function logDebounced(data) {
-    if (timer.current) clearTimeout(timer.current);
-    timer.current = setTimeout(() => {
-      console.log('Form Two Data Saved:', data);
-    }, 900); // only logs once every 300ms after user stops typing
-  }
-}
-
-// Usage — inside your component
-const logDebounced = useDebouncedLogger();
-const handleChange = (field, value) => {
-  setFormDatatwo(prev => {
-    const updated = { ...prev, [field]: value };
-    sessionStorage.setItem("formTwoData", JSON.stringify(updated));
-    logDebounced(updated);
-    return updated;
+  const [errors, setErrors] = useState({
+    email: '',
+    phone: '',
+    address: '',
+    zipCode: '',
+    city: ''
   });
-};
 
+  function useDebouncedLogger() {
+    const timer = useRef(null);
+    return function logDebounced(data) {
+      if (timer.current) clearTimeout(timer.current);
+      timer.current = setTimeout(() => {
+        console.log('Form Two Data Saved:', data);
+      }, 900);
+    }
+  }
+
+  const logDebounced = useDebouncedLogger();
+
+  const handleChange = (field, value) => {
+    let validatedValue = value;
+    let errorMessage = '';
+
+    // Email validation
+    if (field === 'email') {
+      // Check for valid email format
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (value && !emailRegex.test(value)) {
+        errorMessage = 'Please enter a valid email address';
+      }
+      // No special filtering for email, just validation message
+      validatedValue = value;
+    }
+
+    // Phone validation
+    if (field === 'phone') {
+      // Only allow numbers, spaces, +, (, ), -
+      if (/[^0-9\s+()-]/.test(value)) {
+        errorMessage = 'Only numbers and phone symbols allowed';
+      }
+      // Check length (max 20 characters for international formats)
+      if (value.length > 10) {
+        errorMessage = 'Maximum 20 characters allowed';
+      }
+      validatedValue = value.replace(/[^0-9\s+()-]/g, '').slice(0, 20);
+    }
+
+    // Address validation
+    if (field === 'address') {
+      // Allow letters, numbers, spaces, and common address characters (.,-)
+      if (/[^a-zA-Z0-9\s.,-]/.test(value)) {
+        errorMessage = 'Only letters, numbers, and basic punctuation allowed';
+      }
+      // Max 100 characters
+      if (value.length > 100) {
+        errorMessage = 'Maximum 100 characters allowed';
+      }
+      validatedValue = value.replace(/[^a-zA-Z0-9\s.,-]/g, '').slice(0, 100);
+    }
+
+    // ZIP Code validation
+    if (field === 'zipCode') {
+      // Only numbers and letters (for international ZIP codes)
+      if (/[^a-zA-Z0-9\s-]/.test(value)) {
+        errorMessage = 'Only letters, numbers, and hyphens allowed';
+      }
+      // Max 10 characters
+      if (value.length > 10) {
+        errorMessage = 'Maximum 10 characters allowed';
+      }
+      validatedValue = value.replace(/[^a-zA-Z0-9\s-]/g, '').slice(0, 10);
+    }
+
+    // City validation
+    if (field === 'city') {
+      // Only letters and spaces
+      if (/[^a-zA-Z\s]/.test(value)) {
+        errorMessage = 'Only letters and spaces allowed';
+      }
+      // Max 50 characters
+      if (value.length > 50) {
+        errorMessage = 'Maximum 50 characters allowed';
+      }
+      validatedValue = value.replace(/[^a-zA-Z\s]/g, '').slice(0, 50);
+    }
+
+    // Update errors
+    setErrors(prev => ({
+      ...prev,
+      [field]: errorMessage
+    }));
+
+    // Clear error after 3 seconds
+    if (errorMessage) {
+      setTimeout(() => {
+        setErrors(prev => ({
+          ...prev,
+          [field]: ''
+        }));
+      }, 3000);
+    }
+
+    setFormDatatwo(prev => {
+      const updated = { ...prev, [field]: validatedValue };
+      logDebounced(updated);
+      return updated;
+    });
+  };
 
   const countryOptions = ['United States', 'Canada', 'United Kingdom', 'Australia'];
   const stateOptions = ['New York', 'California', 'Texas', 'Florida', 'Illinois'];
 
-  // Conditions for dynamic UI rendering
   const showStateField = formDatatwo.country !== '';
   const showContactSection = formDatatwo.country !== '' && formDatatwo.state !== '';
 
@@ -141,8 +205,11 @@ const handleChange = (field, value) => {
               value={formDatatwo.email}
               onChange={(e) => handleChange('email', e.target.value)}
               placeholder="rosa@gmail.com"
-              className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:border-blue-500 text-lg"
+              className={`w-full px-4 py-3 border-2 ${errors.email ? 'border-red-500' : 'border-gray-300'} rounded-xl focus:outline-none focus:border-blue-500 text-lg`}
             />
+            {errors.email && (
+              <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+            )}
           </div>
 
           {/* Phone */}
@@ -155,8 +222,11 @@ const handleChange = (field, value) => {
               value={formDatatwo.phone}
               onChange={(e) => handleChange('phone', e.target.value)}
               placeholder="+ (254) 546 4125"
-              className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:border-blue-500 text-lg"
+              className={`w-full px-4 py-3 border-2 ${errors.phone ? 'border-red-500' : 'border-gray-300'} rounded-xl focus:outline-none focus:border-blue-500 text-lg`}
             />
+            {errors.phone && (
+              <p className="text-red-500 text-sm mt-1">{errors.phone}</p>
+            )}
           </div>
 
           {/* Residential Address */}
@@ -181,10 +251,13 @@ const handleChange = (field, value) => {
                 value={formDatatwo.address}
                 onChange={(e) => handleChange('address', e.target.value)}
                 placeholder="124 Street Rd."
-                className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:border-blue-500 text-lg pr-12"
+                className={`w-full px-4 py-3 border-2 ${errors.address ? 'border-red-500' : 'border-gray-300'} rounded-xl focus:outline-none focus:border-blue-500 text-lg pr-12`}
               />
               <Search className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-600" size={20} />
             </div>
+            {errors.address && (
+              <p className="text-red-500 text-sm mt-1">{errors.address}</p>
+            )}
           </div>
 
           {/* ZIP Code & City */}
@@ -198,9 +271,12 @@ const handleChange = (field, value) => {
                 value={formDatatwo.zipCode}
                 onChange={(e) => handleChange('zipCode', e.target.value)}
                 placeholder="12603"
-                className="w-full px-4 py-3 border-2 border-blue-500 rounded-xl focus:outline-none focus:border-blue-600 text-lg"
+                className={`w-full px-4 py-3 border-2 ${errors.zipCode ? 'border-red-500' : 'border-blue-500'} rounded-xl focus:outline-none focus:border-blue-600 text-lg`}
                 required
               />
+              {errors.zipCode && (
+                <p className="text-red-500 text-sm mt-1">{errors.zipCode}</p>
+              )}
             </div>
 
             <div>
@@ -212,9 +288,12 @@ const handleChange = (field, value) => {
                 value={formDatatwo.city}
                 onChange={(e) => handleChange('city', e.target.value)}
                 placeholder="NY"
-                className="w-full px-4 py-3 border-2 border-blue-500 rounded-xl focus:outline-none focus:border-blue-600 text-lg"
+                className={`w-full px-4 py-3 border-2 ${errors.city ? 'border-red-500' : 'border-blue-500'} rounded-xl focus:outline-none focus:border-blue-600 text-lg`}
                 required
               />
+              {errors.city && (
+                <p className="text-red-500 text-sm mt-1">{errors.city}</p>
+              )}
             </div>
           </div>
         </div>
