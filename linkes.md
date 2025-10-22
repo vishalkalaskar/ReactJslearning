@@ -29,3 +29,10 @@ React Ui lib url
 | **Rebass**         | Responsive, themeable UI primitives          | (https://rebassjs.org](https://rebassjs.org)                         |
 | **Evergreen**      | UI framework by Segment, modern & flexible   | (https://evergreen.segment.com](https://evergreen.segment.com)       |
 | **React Spectrum** | Adobe’s React components for enterprise apps | (https://react-spectrum.adobe.com](https://react-spectrum.adobe.com) |
+
+
+
+Study links for chatgpt
+[postgrasSQl](https://chatgpt.com/c/68f87a3f-47c4-8322-a142-85fc8fc4c02b)
+[next.js]()
+[reactjs]()
