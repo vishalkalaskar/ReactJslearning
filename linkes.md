@@ -34,5 +34,7 @@ React Ui lib url
 
 Study links for chatgpt
 [postgrasSQl](https://chatgpt.com/c/68f87a3f-47c4-8322-a142-85fc8fc4c02b)
-[next.js]()
-[reactjs]()
+[next.js](https://chatgpt.com/c/68e5eadf-a460-8321-8236-995f1ce9f055)
+[reactjs](https://chatgpt.com/c/68dfe273-1158-8320-94d0-e2406b64f1f6)
+[querk,aem and other configuration](https://chatgpt.com/c/68e8a829-2d78-8321-9775-38e5395d25ec)
+[nodejs](https://chatgpt.com/c/68e3ffa0-d6c0-8324-9a18-54f6b3855a1a)
