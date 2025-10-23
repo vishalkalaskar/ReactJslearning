@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import { Building2, HandCoins, Home, ChevronDown, User } from 'lucide-react';
 import './DesignateBeneficiaries.css';
 
+
 const DesignateBeneficiaries = ({ onSelectionChange, selectedType: initialSelectedType }) => {
   const [selectedType, setSelectedType] = useState(initialSelectedType || null);
   const [showHelp, setShowHelp] = useState(false);
-
+   
   // Update local state when prop changes (for back navigation)
   React.useEffect(() => {
     if (initialSelectedType === null) {
@@ -114,6 +115,7 @@ const DesignateBeneficiaries = ({ onSelectionChange, selectedType: initialSelect
           </div>
         )}
       </div>
+     
     </div>
   );
 };

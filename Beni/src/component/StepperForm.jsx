@@ -217,22 +217,37 @@ const StepperForm = () => {
       </div>
 
       {/* Navigation Buttons */}
-      <div className="buttons">
+              <div className="flex gap-4" style={{ marginTop: "3%", marginLeft: "19%" }}>
+                <button 
+                  onClick={prevStep} disabled={false}
+                  className="px-8 py-3 border-2 border-blue-600 text-blue-600 font-semibold rounded-lg hover:bg-blue-50 transition-colors"
+                  style={{"border":"2px solid"}}
+                >
+                  Back
+                </button>
+                <button 
+                  className="px-8 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors"
+                  onClick={nextStep}          
+                  >
+                  Next
+                </button>
+              </div>
+      {/* <div className="buttons">
         <button onClick={prevStep} disabled={false}>
           Back
         </button>
-        {/* <button
+        { <button
           onClick={nextStep}
           disabled={!isNextEnabled() || step === 5}
         >
           Next
-        </button> */}
+        </button> }
         <button
           onClick={nextStep}
         >
           Next
         </button>
-      </div>
+      </div> */}
     </div>
   );
 };

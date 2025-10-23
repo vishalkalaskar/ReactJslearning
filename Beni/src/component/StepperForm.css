@@ -113,13 +113,13 @@ button:disabled {
   cursor: not-allowed;
 }
 
-.section {
+/* .section {
   border: 1px solid #ddd;
   padding: 15px;
   margin-bottom: 15px;
   border-radius: 8px;
   text-align: left;
-}
+} */
 
 .section h4 {
   margin-bottom: 10px;
