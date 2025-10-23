@@ -84,6 +84,7 @@ function GlobalDesignationPage() {
                 <button 
                   onClick={() => navigate('/')}
                   className="px-8 py-3 border-2 border-blue-600 text-blue-600 font-semibold rounded-lg hover:bg-blue-50 transition-colors"
+                  style={{"border":"2px solid"}}
                 >
                   Back
                 </button>
