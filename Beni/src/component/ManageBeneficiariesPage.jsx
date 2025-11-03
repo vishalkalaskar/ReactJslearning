@@ -1,147 +1,168 @@
 import React, { useState } from 'react';
-import { AlertCircle, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { Heart, AlertCircle, ChevronDown, ChevronUp, ArrowRight, ExternalLink } from 'lucide-react';
 
-function BeneficiaryManager() {
+export default function ManageBeneficiaries() {
   const navigate = useNavigate();
-  const [accounts] = useState([
+  const [expandedAccount, setExpandedAccount] = useState('NYU Pension Plan');
+
+  const accounts = [
     {
       id: 1,
-      name: 'NYU 403B Plan',
-      balance: 2500.00,
-      hasBeneficiaries: false
+      name: 'NYU 403B',
+      balance: '$0.00',
+      date: '{00/00/0000}',
+      hasBeneficiaries: true,
+      contracts: null,
+      showButton: false
     },
     {
       id: 2,
-      name: 'NYU Deferred Contribution Plan',
-      balance: 500.00,
-      hasBeneficiaries: false
+      name: 'NYU Pension Plan',
+      balance: '$0.00',
+      date: '{00/00/0000}',
+      hasBeneficiaries: false,
+      contracts: 2,
+      showButton: true
     }
-  ]);
+  ];
+
+  const toggleAccount = (accountName) => {
+    setExpandedAccount(expandedAccount === accountName ? null : accountName);
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Hero Section */}
-      <div className="bg-gradient-to-br from-blue-900 to-blue-800 text-white px-8 py-16">
-        <div className="max-w-7xl mx-auto">
-          <h1 className="text-5xl font-bold mb-2">Manage beneficiaries</h1>
-        </div>
+      {/* Header */}
+      <div className="bg-blue-900 text-white py-8 px-6">
+        <h1 className="text-4xl font-bold">Manage beneficiaries</h1>
       </div>
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-8 py-12">
-        {/* Global Designation Section */}
-        <div className="bg-white rounded-lg shadow-sm p-12 mb-8">
-          <div className="flex items-start justify-between">
-            <div className="flex-1">
-              <h2 className="text-4xl font-bold text-blue-900 mb-6">
-                Let's start by adding beneficiaries
-              </h2>
-              <p className="text-lg text-gray-700 mb-8">
-                Set-up one designation to apply to all your accounts by<br />
-                creating a <span className="font-bold text-blue-900">global designation</span>.
-              </p>
-              <button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-4 rounded-lg flex items-center gap-2 transition-colors"
-                onClick={() => navigate("/GlobalDesignationPage")}
-                >
-                
-                Create global designation
-                <ArrowRight className="w-5 h-5" />
-              </button>
-            </div>
-            <div className="ml-8">
-              <svg width="200" height="200" viewBox="0 0 200 200" className="transform scale-110">
-                <circle cx="100" cy="100" r="80" fill="#2563eb" opacity="0.9" />
-                <path d="M 100 100 L 100 20 A 80 80 0 0 1 180 100 Z" fill="#10b981" opacity="0.8" />
-                <path d="M 100 100 L 180 100 A 80 80 0 0 1 140 170 Z" fill="#06b6d4" opacity="0.7" />
-              </svg>
-            </div>
-          </div>
-
-          {/* Alert Banner */}
-          <div className="mt-8 border-2 border-orange-300 bg-orange-50 rounded-lg p-4 flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <AlertCircle className="w-6 h-6 text-orange-600 flex-shrink-0" />
-              <p className="text-gray-800 font-medium">
-                None of your accounts have any beneficiaries designated yet.
-              </p>
-            </div>
-            <div className="flex gap-2">
-              <button className="p-2 bg-gray-800 hover:bg-gray-700 rounded text-white transition-colors">
-                <ChevronLeft className="w-5 h-5" />
-              </button>
-              <button className="p-2 bg-gray-800 hover:bg-gray-700 rounded text-white transition-colors">
-                <ChevronRight className="w-5 h-5" />
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* Individual Accounts Section */}
-        <div className="mb-8">
-          <h2 className="text-3xl font-bold text-blue-900 mb-6">
-            Manage your individual accounts
-          </h2>
-
-          <div className="space-y-4">
-            <h3 className="text-xl font-bold text-gray-900">
-              Retirement accounts ({accounts.length})
-            </h3>
-
-            {accounts.map((account) => (
-              <div
-                key={account.id}
-                className="bg-white rounded-lg shadow-sm border border-gray-200 p-6"
-              >
-                <div className="flex items-start justify-between mb-4">
-                  <div>
-                    <h4 className="text-2xl font-bold text-blue-900 mb-2">
-                      {account.name}
-                    </h4>
-                    <p className="text-gray-600">
-                      Estimated balance as of today ${account.balance.toFixed(2)}
-                    </p>
-                  </div>
-                  <button className="text-blue-600 hover:text-blue-700 bg-white font-semibold flex items-center gap-2 transition-colors">
-                    Designate beneficiaries
-                    <ArrowRight className="w-5 h-5" />
+      <div className="max-w-7xl mx-auto px-6 py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Left Column - Main Content */}
+          <div className="lg:col-span-2">
+            {/* Intro Section */}
+            <div className="mb-8">
+              <div className="flex items-start gap-8 mb-6">
+                <div className="flex-1">
+                  <h2 className="text-3xl font-bold text-gray-900 mb-4">
+                    Let's start by setting up your beneficiaries
+                  </h2>
+                  <p className="text-gray-700 mb-6">
+                    Once you add beneficiaries, you can designate your assets and apply the changes to all accounts.
+                  </p>
+                  <button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-md flex items-center gap-2 transition-colors">
+                    Add beneficiaries
+                    <ArrowRight size={20} />
                   </button>
                 </div>
-
-                <div className="flex items-start gap-3 bg-orange-50 border border-orange-200 rounded-lg p-4">
-                  <AlertCircle className="w-5 h-5 text-orange-600 flex-shrink-0 mt-0.5" />
-                  <p className="text-orange-800 text-sm">
-                    Your estate is designated as default until you add your own beneficiaries
-                  </p>
+                <div className="hidden md:block">
+                  <div className="relative">
+                    <Heart size={80} fill="#3B82F6" stroke="#1E3A8A" strokeWidth={3} className="text-blue-600" />
+                    <div className="absolute -bottom-4 -right-4">
+                      <svg width="100" height="80" viewBox="0 0 100 80" fill="none">
+                        <path d="M20 40 Q30 20, 50 30 Q70 40, 80 35" stroke="#1E3A8A" strokeWidth="6" fill="none" strokeLinecap="round"/>
+                        <path d="M40 50 Q50 55, 60 50" stroke="#1E3A8A" strokeWidth="6" fill="none" strokeLinecap="round"/>
+                        <path d="M30 60 Q40 65, 50 60" stroke="#1E3A8A" strokeWidth="6" fill="none" strokeLinecap="round"/>
+                      </svg>
+                    </div>
+                  </div>
                 </div>
               </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Info Banner */}
-        <div className="bg-gradient-to-r from-blue-900 to-blue-800 text-white rounded-lg p-8">
-          <div className="flex items-start gap-4">
-            <div className="mt-1">
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <circle cx="12" cy="12" r="10" />
-                <path d="M12 16v-4M12 8h.01" />
-              </svg>
             </div>
+
+            {/* Your Accounts Section */}
             <div>
-              <h3 className="text-2xl font-bold mb-3">
-                Why it's important to add beneficiaries to your account
-              </h3>
-              <p className="text-blue-100 mb-4 leading-relaxed">
-                Naming beneficiaries ensures your assets are distributed according to your wishes. It
-                provides a clear inheritance path, helping your loved ones avoid legal hurdles.
+              <h2 className="text-3xl font-bold text-gray-900 mb-6">Your accounts</h2>
+              
+              <div className="mb-4">
+                <h3 className="text-xl font-semibold text-gray-900 mb-4">
+                  Retirement (2)
+                </h3>
+              </div>
+
+              {/* Account Cards */}
+              <div className="space-y-4">
+                {accounts.map((account) => (
+                  <div key={account.id} className="bg-white border border-gray-200 rounded-lg">
+                    {/* Account Header */}
+                    <div 
+                      className="p-6 cursor-pointer flex items-center justify-between"
+                      onClick={() => toggleAccount(account.name)}
+                    >
+                      <div className="flex items-center gap-3">
+                        <AlertCircle className="text-orange-500" size={24} />
+                        <div>
+                          <h4 className="text-lg font-bold text-blue-900">{account.name}</h4>
+                          <p className="text-sm text-gray-600">
+                            Estimated balance {account.balance} (as of {account.date})
+                          </p>
+                        </div>
+                      </div>
+                      {expandedAccount === account.name ? (
+                        <ChevronUp className="text-blue-600" size={24} />
+                      ) : (
+                        <ChevronDown className="text-blue-600" size={24} />
+                      )}
+                    </div>
+
+                    {/* Expanded Content */}
+                    {expandedAccount === account.name && (
+                      <div className="px-6 pb-6">
+                        {!account.hasBeneficiaries && (
+                          <div className="bg-orange-50 border-2 border-orange-300 rounded-lg p-4 mb-4 flex items-start gap-3">
+                            <AlertCircle className="text-orange-600 flex-shrink-0 mt-1" size={20} />
+                            <p className="text-gray-800">
+                              You haven't designated beneficiaries for this account.
+                            </p>
+                          </div>
+                        )}
+                        
+                        {account.contracts && (
+                          <p className="text-gray-700 mb-4">
+                            This account includes {account.contracts} contracts.{' '}
+                            <a href="#" className="text-blue-600 underline hover:text-blue-700">
+                              View details
+                            </a>
+                          </p>
+                        )}
+
+                        {account.showButton && (
+                          <button  className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-md flex items-center gap-2 transition-colors"
+                           onClick={() => navigate('/GlobalDesignationPage')}
+                            >
+                            Add beneficiaries
+                            <ArrowRight size={20} />
+                          </button>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Right Column - Info Box */}
+          <div className="lg:col-span-1">
+            <div className="bg-white border border-gray-200 rounded-lg p-6 sticky top-6">
+              <div className="flex items-start gap-4 mb-4">
+                <svg className="flex-shrink-0" width="40" height="40" viewBox="0 0 40 40" fill="none">
+                  <circle cx="20" cy="20" r="18" stroke="#1E3A8A" strokeWidth="2" fill="none"/>
+                  <path d="M20 10 L20 22 L28 18" stroke="#1E3A8A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+                <h3 className="text-xl font-bold text-blue-900">
+                  Why you should add beneficiaries to your account
+                </h3>
+              </div>
+              <p className="text-gray-700 mb-4 leading-relaxed">
+                Naming beneficiaries ensures your assets are distributed according to your wishes. It provides a clear inheritance path, helping your loved ones avoid legal hurdles.
               </p>
-              <a
-                href="#"
-                className="inline-flex items-center gap-2 text-white hover:text-blue-200 font-semibold transition-colors"
-              >
-                Learn more about the value of beneficiaries
-                <ArrowRight className="w-5 h-5" />
+              <a href="#" className="text-blue-600 font-semibold flex items-center gap-2 hover:text-blue-700">
+                Learn more about beneficiaries
+                <ExternalLink size={16} />
               </a>
             </div>
           </div>
@@ -150,4 +171,3 @@ function BeneficiaryManager() {
     </div>
   );
 }
-export default BeneficiaryManager;
