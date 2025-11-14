@@ -1,0 +1,14 @@
+{
+  "devDependencies": {
+    "@babel/core": "^7.28.5",
+    "@babel/preset-env": "^7.28.5",
+    "@babel/preset-react": "^7.28.5",
+    "@babel/preset-typescript": "^7.28.5",
+    "@types/node": "^24.10.1",
+    "babel-loader": "^10.0.0",
+    "vite-plugin-federation": "^0.0.1"
+  },
+  "dependencies": {
+    "@originjs/vite-plugin-federation": "^1.4.1"
+  }
+}
