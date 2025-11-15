@@ -1,0 +1,155 @@
+
+npm install babel-loader @babel/core @babel/preset-env @babel/preset-react @babel/preset-typescript --save-dev
+
+{
+  "presets": [
+    "@babel/preset-env",
+    "@babel/preset-react",
+    "@babel/preset-typescript"
+  ]
+}
+
+.babelrc
+
+npx webpack serve --config webpack.config.cjs
+
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { ModuleFederationPlugin } = require('webpack').container;
+
+module.exports = {
+  mode: 'development',
+  entry: './src/main.tsx',
+  output: {
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'main.js',
+    // Use your actual GitHub CodeSpaces URL
+	//publicPath: 'http://localhost:3001/', mention IP also
+    publicPath: 'https://redesigned-journey-4r44pvqwrg4h7g7g-3001.app.github.dev/',
+  },
+  resolve: {
+    extensions: ['.ts', '.tsx', '.js'],
+  },
+  module: {
+    rules: [
+      {
+        test: /\.(ts|tsx)$/,
+        exclude: /node_modules/,
+        use: 'babel-loader',
+      },
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader'],
+      },
+    ],
+  },
+  plugins: [
+    new ModuleFederationPlugin({
+      name: 'hello_app',
+      filename: 'remoteEntry.js',
+      exposes: {
+        './App': './src/App.tsx',
+      },
+      shared: {
+        react: { singleton: true, eager: true, requiredVersion: '^18.0.0' },
+        'react-dom': { singleton: true, eager: true, requiredVersion: '^18.0.0' },
+      },
+    }),
+    new HtmlWebpackPlugin({
+      template: './public/index.html',
+    }),
+  ],
+  devServer: {
+    port: 3001,
+    host: '0.0.0.0', // Allows external access
+    hot: true,
+    open: true,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
+      'Access-Control-Allow-Headers': 'X-Requested-With, content-type, Authorization',
+    },
+  },
+};
+
+
+rm -rf node_modules package-lock.json
+npm install
+
+npm install --save react react-dom
+npm install @originjs/vite-plugin-federation
+npm install --save-dev webpack webpack-cli webpack-dev-server html-webpack-plugin @babel/core @babel/preset-react babel-loader
+touch webpack.config.js  and cjs
+touch .babelrc
+touch public/index.html
+
+npm install html-webpack-plugin webpack container --save-dev
+
+vite.config.ts
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+
+import federation from 'vite-plugin-federation';
+import federation from '@originjs/vite-plugin-federation'
+
+export default defineConfig({
+  plugins: [
+    react(),
+    federation({
+      name: 'hello-app',
+      filename: 'remoteEntry.js',
+      exposes: {
+        './Hello': './src/Hello.tsx', // Replace with your actual component
+		 // Replace with your actual module paths
+        './App': './src/App',
+      },
+      shared: ['react', 'react-dom'],
+    }),
+  ],
+  build: {
+    target: 'esnext',
+    minify: false,
+    cssCodeSplit: false,
+  },
+});
+
+
+webpack file and test configuration
+npm install babel-loader @babel/core @babel/preset-env @babel/preset-react @babel/preset-typescript --save-dev
+npm install html-webpack-plugin webpack container --save-dev
+npx webpack serve --config webpack.config.cjs
+npm install --save-dev style-loader css-loader
+npm install --save-dev @svgr/webpack
+npx webpack serve --config webpack.config.cjs
+
+
+lsof -i :3005
+kill <PID>
+
+
+refer call project in reacjsworkspace
+
+**study linke**
+webpack link - https://www.perplexity.ai/search/create-one-hello-app-with-sere-f.zQbtmVSVm7VyG6ji3Bjg  --first link
+            - https://www.perplexity.ai/search/import-defineconfig-from-vite-Gd9FGYOURiCGF.unfBfJaA   -- second link
+			
+	        - https://claude.ai/chat/58d1c377-33cc-4396-960b-c84e21f1d8fe
+			- https://claude.ai/chat/f1734259-2921-48e0-b3bc-4a3cb89eb6e5
+			-https://claude.ai/chat/11644f87-00cc-4fdf-8047-69eeca8f7181
+			
+			
+			
+if github code space is change 
+change codespace url 
+npm install babel-loader @babel/core @babel/preset-env @babel/preset-react @babel/preset-typescript --save-dev
+npx webpack serve --config webpack.config.cjs
+
+**if getting this error on broser**
+React is not defined
+ReferenceError: React is not defined
+
+   add this linek app or any page   ** import React from 'react'; **
+   
+   
+npm install -D tailwindcss postcss autoprefixer
+npm install -D @tailwindcss/postcss
