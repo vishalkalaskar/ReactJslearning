@@ -38,3 +38,4 @@ Study links for chatgpt
 [reactjs](https://chatgpt.com/c/68dfe273-1158-8320-94d0-e2406b64f1f6)
 [querk,aem and other configuration](https://chatgpt.com/c/68e8a829-2d78-8321-9775-38e5395d25ec)
 [nodejs](https://chatgpt.com/c/68e3ffa0-d6c0-8324-9a18-54f6b3855a1a)
+[reactQandA](https://chatgpt.com/c/690b6c5c-3bc0-8322-af3c-489e8bc80c30)
