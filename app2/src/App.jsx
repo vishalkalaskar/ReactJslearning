@@ -61,7 +61,7 @@ function App() {
             newcount==0?<h1>Condition 1</h1>
             :newcount==1?<h1>Condition 2</h1>
             :newcount==2?<h2>Condition 3</h2>
-            :h2>other condition</h2>
+            :<h2>other condition</h2>
           }
 
      </div>

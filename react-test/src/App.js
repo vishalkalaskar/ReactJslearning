@@ -12,6 +12,8 @@ function App() {
   const[display,setDisplay] = useState(true);
    const[displaycom,setDisplaycom] = useState(true);
    const[mulcount,setMulcount] = useState(0);
+   const[age,setAge] = useState();
+   const[dispalyage,setDispalyage]=useState();
    const userobj={
     name :'vishal',
     age : 20,
@@ -69,6 +71,10 @@ function App() {
    {
     setFruit("Banna");
    }
+   function readage()
+   {
+    setDispalyage(age);
+   }
   
   return (
     <div>
@@ -90,10 +96,18 @@ function App() {
       </ul>
        {Taskarr.length>0&&<button onClick={removefunction}>Remove</button>}
        <hr></hr>
+       <p>Input filed with useRef </p>
        <input type="text" ref={valueref}></input>
        <button onClick={readValue}>Read vlaue</button>
        <h4>{value}</h4> 
 
+       <p>Input filed without useRef </p>
+       <input type="text" value={age} palceholder="Enter you age" onChange={(e)=>setAge(e.target.value)}></input>
+       <button onClick={readage}>read age</button>
+       <h3>{dispalyage}</h3>
+       <button onClick={(e)=>{setDispalyage("");setAge("")}}>clear age</button>
+
+      
        <hr></hr>
        <div style={{backgroundColor:colorvalue}}>
        <p>color dropdown</p>
@@ -142,8 +156,8 @@ function App() {
     <Userdetails userobj={userobj} />
     <p>Props without </p>
     <Userdetailstwo userobj={userobjtwo} />
-
-
+   
+     <hr></hr>
     </div>
   );
 }
