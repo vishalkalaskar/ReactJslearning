@@ -1,4 +1,5 @@
-import React, { useState ,useRef} from "react";
+import React, { useState ,useRef,useTransition, startTransition} from "react";
+import{useFormStatus} from "react-dom";
 import Usercomp,{Userdetails,Userdetailstwo} from "./Usercom";
 function App() {
   const [Taskarr, setTaskarr] = useState([]);
@@ -14,6 +15,18 @@ function App() {
    const[mulcount,setMulcount] = useState(0);
    const[age,setAge] = useState();
    const[dispalyage,setDispalyage]=useState();
+   const[skill,setSkill]=useState([]);
+
+   function handlechange(event){
+      console.log(event.target.value,event.target.checked);
+      if(event.target.checked)
+      {
+        setSkill([...skill,event.target.value])
+      }
+      else(
+         setSkill([...skill.filter((item)=>item!=event.target.value)])
+      )
+   }
    const userobj={
     name :'vishal',
     age : 20,
@@ -75,7 +88,35 @@ function App() {
    {
     setDispalyage(age);
    }
+
+    
+  const handleForm = async () => {
+  await new Promise(res => setTimeout(res, 200));
+  console.log("submitting form...");
+};
+
+   function Customform()
+   {
+     const {pending} = useFormStatus();
+     console.log("working on form..");
+     return(
+       <div>
+           <input type="text"></input>
+                <br>
+                </br>
+                <input type="text"></input>
+                <br></br>
+                <button disabled={pending}>{pending?"submiting...":"submit"}</button>
+        </div>
+     );
+   }
   
+   const[transpending,startTransition] = useTransition();
+   const handletrans=  ()=>{
+     startTransition( async  () => {
+         await new Promise((res)=>setTimeout(res, 5000));
+     })
+   }
   return (
     <div>
       <h1>To do list app</h1>
@@ -158,6 +199,40 @@ function App() {
     <Userdetailstwo userobj={userobjtwo} />
    
      <hr></hr>
+     <p>Checkbox selection</p>
+       <h5>Select your skill</h5>
+        <br></br>
+        <input onChange={handlechange} type="checkbox" id="java" value="java" />
+        <label htmlFor="java">java</label>
+
+         <br></br>
+        <input onChange={handlechange}  type="checkbox" id="sql" value="sql" />
+        <label htmlFor="sql">sql</label>
+         <br></br>
+        <input onChange={handlechange}  type="checkbox" id="html" value="html" />
+        <label htmlFor="html">html</label>
+         <br></br>
+        <input onChange={handlechange}  type="checkbox" id="css" value="css" />
+        <label htmlFor="css">css</label>
+        <br></br>
+        <br></br>
+       <h3> {skill.toString()}</h3>
+       <hr></hr>
+       <div>
+          <h5>hooks</h5>
+           <h6>This userFormstatus</h6>
+             <form action={handleForm}>
+              <Customform />
+             </form>
+       </div>
+       <hr></hr>
+       <div>
+          <h6>userTransition</h6>
+          {
+            transpending ? <img style={{ width:50}} src="https://media.tenor.com/WX_LDjYUrMsAAAAi/loading.gif"></img> :null
+          }
+           <button disabled={transpending} onClick={handletrans}>click</button>
+       </div>
     </div>
   );
 }
