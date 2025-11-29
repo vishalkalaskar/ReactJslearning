@@ -1,6 +1,8 @@
 import React, { useState ,useRef,useTransition, startTransition} from "react";
 import{useFormStatus} from "react-dom";
 import Usercomp,{Userdetails,Userdetailstwo} from "./Usercom";
+import Username from "./Username";
+import Displayuser from "./Displayuser";
 function App() {
   const [Taskarr, setTaskarr] = useState([]);
   const [taskname, setTaskname] = useState("");
@@ -16,6 +18,7 @@ function App() {
    const[age,setAge] = useState();
    const[dispalyage,setDispalyage]=useState();
    const[skill,setSkill]=useState([]);
+   const[arrele,setarrele]=useState(['anil','akash','pinkee']);
 
    function handlechange(event){
       console.log(event.target.value,event.target.checked);
@@ -95,21 +98,21 @@ function App() {
   console.log("submitting form...");
 };
 
-   function Customform()
-   {
-     const {pending} = useFormStatus();
-     console.log("working on form..");
-     return(
-       <div>
-           <input type="text"></input>
-                <br>
-                </br>
-                <input type="text"></input>
-                <br></br>
-                <button disabled={pending}>{pending?"submiting...":"submit"}</button>
-        </div>
-     );
-   }
+  //  function Customform()
+  //  {
+  //    const {pending} = useFormStatus();
+  //    console.log("working on form..");
+  //    return(
+  //      <div>
+  //          <input type="text"></input>
+  //               <br>
+  //               </br>
+  //               <input type="text"></input>
+  //               <br></br>
+  //               <button disabled={pending}>{pending?"submiting...":"submit"}</button>
+  //       </div>
+  //    );
+  //  }
   
    const[transpending,startTransition] = useTransition();
    const handletrans=  ()=>{
@@ -117,6 +120,46 @@ function App() {
          await new Promise((res)=>setTimeout(res, 5000));
      })
    }
+
+   const [username, setUsername] = useState("anil");
+   const[data,setData] = useState({
+     name:'anil',
+     address:{
+      city:'pune',
+      country:'india'
+     }
+   })
+   const handlenamechange = (name) =>
+ {
+    data.name = name;
+    setData({...data});
+ }
+ const handlechangecity=(city)=>
+ {
+    data.address.city=city;
+    setData({...data, address:{...data.address,city}});
+ }
+  
+  const[userform,setUserform]=useState([
+    {name:"vishal",age:26},
+    {name:'anil',age:27},
+    {name:'kiran',age:29}
+  ])
+  const handlearr=(n)=>
+  {
+    setarrele([...arrele,arrele[arrele.length-1]=n]);
+  }
+  // const handleage=(age)=>{
+  //      setUserform([...userform,userform[userform.length-1].age=age])
+  // }
+  const handleage = (age) => {
+  setUserform(prev => 
+    prev.map((item, index) => 
+      index === prev.length - 1 ? { ...item, age: age } : item
+    )
+  );
+};
+
   return (
     <div>
       <h1>To do list app</h1>
@@ -218,13 +261,13 @@ function App() {
         <br></br>
        <h3> {skill.toString()}</h3>
        <hr></hr>
-       <div>
+       {/* <div>
           <h5>hooks</h5>
            <h6>This userFormstatus</h6>
              <form action={handleForm}>
               <Customform />
              </form>
-       </div>
+       </div> */}
        <hr></hr>
        <div>
           <h6>userTransition</h6>
@@ -233,6 +276,37 @@ function App() {
           }
            <button disabled={transpending} onClick={handletrans}>click</button>
        </div>
+       <hr></hr>
+        <div>
+      <h6>State Lifting Up</h6>
+
+      {/* child updates parent's state */}
+      <Username setUsername={setUsername} username={username} />
+
+      {/* pass the actual username value to display */}
+      <Displayuser username={username} />
+    </div>
+    <div>
+      <h4>Upadting object and nested object state</h4>
+        <input type="text" onChange={(e)=>handlenamechange(e.target.value)} placeholder="enter name"></input>
+        <input type="text" onChange={(e)=>handlechangecity(e.target.value)} placeholder="enter city"></input>
+        <h4>Name :{data.name}</h4>
+        <h4>Name :{data.address.city}</h4>
+         <h4>Name :{data.address.country}</h4>
+    </div>
+    <div>
+      <h4>The Array udpate</h4>
+      <input type="text" placeholder="Enter name" onChange={(e)=>handlearr(e.target.value)}></input>
+      <p>{arrele.toString()}</p>
+    </div>
+    <hr></hr>
+    <input type="text" placeholder="Enter age" onChange={(e)=>handleage(e.target.value)}></input>
+     {
+      userform.map((user,index)=>(
+             <h4 key={index}>{user.name},{user.age}</h4>
+      ))
+     }
+     
     </div>
   );
 }
