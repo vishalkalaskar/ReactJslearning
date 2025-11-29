@@ -337,6 +337,20 @@ path="/"                    URL path (like /about, /contact)
 element={<Home />}          Component rendered for that path
 <Link>          	    Used for navigation (instead of <a> tag) — it prevents full reloads
 
+<BrowserRouter>
+      <Suspense fallback={<h2>Loading...</h2>}>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="*" element={<h1>404 Not Found</h1>} />
+        </Routes>
+      </Suspense>
+    </BrowserRouter>
+
+<Link to="/">Home</Link>
+<Link to="/about">About</Link>
+<Link to="/contact">Contact</Link>
+
 # Route Parameters?
  import { BrowserRouter, Routes, Route, Link, useParams } from "react-router-dom";
   <Route path="/user/:id" element={<User />} /> {/* 2️⃣ Dynamic Route */}
