@@ -468,3 +468,23 @@ spread operator [...skills,event.target.value];
 | Combine objects | `{ ...obj1, ...obj2 }`          |
 
 **input filed has checked property**
+
+# useActionState hook
+  Used to handle form in React js
+  it update state based on the result of a action.
+  const handlesubmit=()=>{}
+  const[data,action,pending]=useActionState(handlesubmit,undefined);
+  const[data,action,pending]=useActionState();
+    data-->input filed data any data realeted to the form
+    action-->sumbit the data
+    pending-->form stage stating.
+
+**imp [?]*
+ data?.message 
+ “If data exists, then read data.error.
+ If data is null or undefined, return undefined instead of crashing.”
+
+ ## useId -->Hook
+ const id = useId()
+   
+

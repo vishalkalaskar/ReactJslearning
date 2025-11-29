@@ -1,4 +1,4 @@
-import React, { useState ,useRef,useTransition, startTransition} from "react";
+import React, { useState ,useRef,useTransition, startTransition,useActionState,useId} from "react";
 import{useFormStatus} from "react-dom";
 import Usercomp,{Userdetails,Userdetailstwo} from "./Usercom";
 import Username from "./Username";
@@ -122,7 +122,7 @@ function App() {
    }
 
    const [username, setUsername] = useState("anil");
-   const[data,setData] = useState({
+   const[edata,setedata] = useState({
      name:'anil',
      address:{
       city:'pune',
@@ -131,13 +131,13 @@ function App() {
    })
    const handlenamechange = (name) =>
  {
-    data.name = name;
-    setData({...data});
+    edata.name = name;
+    setedata({...edata});
  }
  const handlechangecity=(city)=>
  {
-    data.address.city=city;
-    setData({...data, address:{...data.address,city}});
+    edata.address.city=city;
+    seteedata({...edata, address:{...edata.address,city}});
  }
   
   const[userform,setUserform]=useState([
@@ -159,6 +159,27 @@ function App() {
     )
   );
 };
+const handlesubmit=async(previousData,formData) =>{
+  
+  let name = formData.get('name');
+  let pwd = formData.get('password');
+  await new Promise(res=>setTimeout(res,2000));
+  console.log("handlesubmit called",name,pwd);
+  if(name&& pwd)
+  {
+    return{message:"data submitted",name,pwd}
+  }
+  else{
+    return{error:"failed to sumbit.enter proper data",name,pwd}
+  }
+  
+  
+}
+const[data,action,pending]=useActionState(handlesubmit,undefined);
+ const name=useId();
+ const password = useId();
+ const terms = useId();
+ const skills= useId();
 
   return (
     <div>
@@ -290,9 +311,9 @@ function App() {
       <h4>Upadting object and nested object state</h4>
         <input type="text" onChange={(e)=>handlenamechange(e.target.value)} placeholder="enter name"></input>
         <input type="text" onChange={(e)=>handlechangecity(e.target.value)} placeholder="enter city"></input>
-        <h4>Name :{data.name}</h4>
-        <h4>Name :{data.address.city}</h4>
-         <h4>Name :{data.address.country}</h4>
+        <h4>Name :{edata.name}</h4>
+        <h4>Name :{edata.address.city}</h4>
+         <h4>Name :{edata.address.country}</h4>
     </div>
     <div>
       <h4>The Array udpate</h4>
@@ -306,7 +327,32 @@ function App() {
              <h4 key={index}>{user.name},{user.age}</h4>
       ))
      }
-     
+     <div>
+        <h1>useActionstate example</h1>
+        <form action={action}>
+            <input type="text" defaultValue={data?.name} name="name" placeholder="Enter name"></input>
+            <br></br>
+            <input type="text" defaultValue={data?.pwd} name="password" placeholder="Enter password"></input>
+             <br></br>
+             <button disabled={pending}>Sumbit</button>
+          
+        </form>
+         {
+              data?.error &&<span style={{color:'red'}}>{data?.error}</span>
+             }
+             {
+              data?.message &&<span  style={{color:'green'}}>{data?.message}</span>
+             }
+        <h3>Name : {data?.name}</h3>
+        <h3>password : {data?.pwd}</h3>
+     </div>
+     <div>
+        <h3>useId hooks</h3>
+        <h3>{name}</h3>
+        <h3>{password}</h3>
+        <h3>{terms}</h3>
+        <h3>{skills}</h3>
+     </div>
     </div>
   );
 }
